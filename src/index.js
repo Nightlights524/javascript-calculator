@@ -24,6 +24,13 @@ class Calculator extends React.Component {
     this.state = {
       display: 0
     }
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+  }
+
+  handleKeyPress(event) {
+    switch(event.target.value) {
+
+    }
   }
   
   render() {  
@@ -33,23 +40,23 @@ class Calculator extends React.Component {
           <div id="display">
             {this.state.display}
           </div>
-          <button id="clear">AC</button>
-          <button id="divide">/</button>
-          <button id="multiply">x</button>
-          <button id="seven">7</button>
-          <button id="eight">8</button>
-          <button id="nine">9</button>
-          <button id="subtract">-</button>
-          <button id="four">4</button>
-          <button id="five">5</button>
-          <button id="six">6</button>
-          <button id="add">+</button>
-          <button id="one">1</button>
-          <button id="two">2</button>
-          <button id="three">3</button>
-          <button id="equals">=</button>
-          <button id="zero">0</button>
-          <button id="decimal">.</button>
+          <button value="AC" id="clear">AC</button>
+          <button value="/"  id="divide">/</button>
+          <button value="x"  id="multiply">x</button>
+          <button value="7"  id="seven">7</button>
+          <button value="8"  id="eight">8</button>
+          <button value="9"  id="nine">9</button>
+          <button value="-"  id="subtract">-</button>
+          <button value="4"  id="four">4</button>
+          <button value="5"  id="five">5</button>
+          <button value="6"  id="six">6</button>
+          <button value="+"  id="add">+</button>
+          <button value="1"  id="one">1</button>
+          <button value="2"  id="two">2</button>
+          <button value="3"  id="three">3</button>
+          <button value="="  id="equals">=</button>
+          <button value="0"  id="zero">0</button>
+          <button value="."  id="decimal">.</button>
         </div>
       </div>
     );
