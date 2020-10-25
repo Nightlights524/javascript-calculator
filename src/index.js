@@ -43,54 +43,57 @@ class Calculator extends React.Component {
   }
 
   handleNumbers(event) {
-    if (this.state.currentValue === '0') {
+    // if (endsWithOperator(this.state.formula)) {
+
+    // }
+    
+    if (this.state.currentValue === '0' ||
+        endsWithOperator(this.state.formula)) {
       this.setState({currentValue: event.target.value});
     } else {
       const newValue = this.state.currentValue + event.target.value;
-      this.setState({currentValue: newValue});
+      this.setState({
+        currentValue: newValue
+      });
     }
+    
+    const currentFormula = this.state.formula + event.target.value;
+    this.setState({formula: currentFormula}, () => {console.log(this.state.formula)});
   }
-
+  
   handleOperators(event) {
-    this.setState({
-      operator: event.target.value});
+    let currentFormula = this.state.formula;
+
+    if (endsWithOperator(this.state.formula)) {
+      // Replace last character in formula
+      currentFormula = currentFormula.replace(/.$/, event.target.value);
+    } else {
+      // Otherwise add operator to the formula
+      currentFormula += event.target.value;
+    }
+    
+    this.setState({formula: currentFormula}, () => {console.log(this.state.formula)});
   }
 
   handleEquals(event) {
-    const previous = parseFloat(this.state.previousValue);
-    const current = parseFloat(this.state.currentValue);
-    let evaluated;
-
-    switch(this.state.operator) {
-      case '+':
-        evaluated = previous + current;
-        break;
-      case '-':
-        evaluated = previous + current;
-        break;
-      case 'x':
-        evaluated = previous * current;
-        break;
-      case '/':
-        evaluated = previous / current;
-        break;
-      default:
-        alert("ERROR: null operator");
-    }
-
-    const display = evaluated.
+    let answer = eval(this.state.formula);
 
     this.setState(state => ({
       previousValue: state.currentValue,
-      currentValue: display
-    }));
+      currentValue: answer,
+      formula: answer.toString()
+    }), () => {console.log(this.state.formula)});
   }
 
   handleDecimal(event) {
     const testRegex = /\./;
     if (!testRegex.test(this.state.currentValue)) {
       const newValue = this.state.currentValue + event.target.value;
-      this.setState({currentValue: newValue});
+      const currentFormula = this.state.formula + event.target.value;
+      this.setState({
+        currentValue: newValue,
+        formula: currentFormula
+      }, () => {console.log(this.state.formula)});
     }
   }
 
@@ -101,18 +104,23 @@ class Calculator extends React.Component {
       previousValue: '0',
       operator: null
     });
+
+    console.log(this.state.formula);
   }
   
   render() {  
     return (
       <div id="container">
         <div id="calculator">
+          {/* <div id="formula-display">
+            {this.state.formula}
+          </div> */}
           <div id="display">
             {this.state.currentValue}
           </div>
           <button value="AC" id="clear" onClick={this.handleClear}>AC</button>
           <button value="/"  id="divide" onClick={this.handleOperators}>/</button>
-          <button value="x"  id="multiply" onClick={this.handleOperators}>x</button>
+          <button value="*"  id="multiply" onClick={this.handleOperators}>x</button>
           <button value="7"  id="seven" onClick={this.handleNumbers}>7</button>
           <button value="8"  id="eight" onClick={this.handleNumbers}>8</button>
           <button value="9"  id="nine" onClick={this.handleNumbers}>9</button>
@@ -124,7 +132,7 @@ class Calculator extends React.Component {
           <button value="1"  id="one" onClick={this.handleNumbers}>1</button>
           <button value="2"  id="two" onClick={this.handleNumbers}>2</button>
           <button value="3"  id="three" onClick={this.handleNumbers}>3</button>
-          <button value="="  id="equals" onClick={this.handleOperators}>=</button>
+          <button value="="  id="equals" onClick={this.handleEquals}>=</button>
           <button value="0"  id="zero" onClick={this.handleNumbers}>0</button>
           <button value="."  id="decimal" onClick={this.handleDecimal}>.</button>
         </div>
@@ -136,6 +144,17 @@ class Calculator extends React.Component {
 // ========================================
 
 ReactDOM.render(
-  <Calculator />,
-  document.getElementById('root')
-);
+    <Calculator />,
+    document.getElementById('root')
+  );
+
+// ========================================
+
+function endsWithOperator(string) {
+  const char = string[string.length-1];
+
+  return char === "+" ||
+         char === "-" ||
+         char === "*" ||
+         char === "/";
+}
