@@ -22,7 +22,7 @@ class Calculator extends React.Component {
 
   handleKeyPress(event) {
     switch(event.target.value) {
-
+      // switch on key codes
     }
   }
 
@@ -30,7 +30,8 @@ class Calculator extends React.Component {
     let currentFormula = this.state.formula;
     
     // Special case, eliminate leading zeros for multi-digit numbers
-    if (this.state.currentValue === '0') {
+    if (this.state.currentValue === '0' && 
+        !endsWithOperator(this.state.formula)) {
       currentFormula = currentFormula.slice(0, -1);
     }
 
@@ -52,20 +53,20 @@ class Calculator extends React.Component {
     let currentFormula = this.state.formula;
 
     if (endsWithOperator(this.state.formula)) {
-    
       if (event.target.value !== "-") {
-
         while (endsWithOperator(currentFormula)) {
           currentFormula = currentFormula.slice(0, -1);
         }
-
       } else if (lastChar === "-") {
           return;
       }
     }
     
-    currentFormula += event.target.value;
+    if (currentFormula === "") {
+      currentFormula += "0";
+    }
 
+    currentFormula += event.target.value;
     this.setState({formula: currentFormula});
   }
 
@@ -78,12 +79,18 @@ class Calculator extends React.Component {
     }
 
     // const answer = eval(formula);
-    const answer = Math.round(1000000000000 * eval(formula)) / 1000000000000;
+    let answer = Math.round(1000000000000 * eval(formula)) / 1000000000000;
+
+    // if(isNaN(answer) || answer === Infinity) {
+    //   answer = "Not a number";
+    // }
+
+    answer = answer.toString();
 
     this.setState(state => ({
       previousValue: state.currentValue,
       currentValue: answer,
-      formula: answer.toString()
+      formula: answer
     }));
   }
 
@@ -159,7 +166,6 @@ ReactDOM.render(
 
 function endsWithOperator(string) {
   const char = string[string.length-1];
-
   return char === "+" ||
          char === "-" ||
          char === "*" ||
