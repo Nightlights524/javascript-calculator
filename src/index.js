@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-
 // const Stateless = props => {
   //   return (
     //     <div>
@@ -43,10 +42,6 @@ class Calculator extends React.Component {
   }
 
   handleNumbers(event) {
-    // if (endsWithOperator(this.state.formula)) {
-
-    // }
-    
     if (this.state.currentValue === '0' ||
         endsWithOperator(this.state.formula)) {
       this.setState({currentValue: event.target.value});
@@ -58,10 +53,12 @@ class Calculator extends React.Component {
     }
     
     const currentFormula = this.state.formula + event.target.value;
-    this.setState({formula: currentFormula}, () => {console.log(this.state.formula)});
+    this.setState({formula: currentFormula});
   }
   
   handleOperators(event) {
+    const char = this.state.formula[this.state.formula.length-1];
+    const entry = event.target.value;
     let currentFormula = this.state.formula;
 
     if (endsWithOperator(this.state.formula)) {
@@ -72,7 +69,7 @@ class Calculator extends React.Component {
       currentFormula += event.target.value;
     }
     
-    this.setState({formula: currentFormula}, () => {console.log(this.state.formula)});
+    this.setState({formula: currentFormula});
   }
 
   handleEquals(event) {
@@ -82,7 +79,7 @@ class Calculator extends React.Component {
       previousValue: state.currentValue,
       currentValue: answer,
       formula: answer.toString()
-    }), () => {console.log(this.state.formula)});
+    }));
   }
 
   handleDecimal(event) {
@@ -93,7 +90,7 @@ class Calculator extends React.Component {
       this.setState({
         currentValue: newValue,
         formula: currentFormula
-      }, () => {console.log(this.state.formula)});
+      });
     }
   }
 
@@ -104,17 +101,15 @@ class Calculator extends React.Component {
       previousValue: '0',
       operator: null
     });
-
-    console.log(this.state.formula);
   }
   
   render() {  
     return (
       <div id="container">
         <div id="calculator">
-          {/* <div id="formula-display">
+          <div id="formula-display">
             {this.state.formula}
-          </div> */}
+          </div>
           <div id="display">
             {this.state.currentValue}
           </div>
