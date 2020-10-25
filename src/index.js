@@ -49,24 +49,23 @@ class Calculator extends React.Component {
   
   handleOperators(event) {
     const lastChar = this.state.formula[this.state.formula.length-1];
-    const entry = event.target.value;
-    
     let currentFormula = this.state.formula;
 
     if (endsWithOperator(this.state.formula)) {
-      // Replace last character in formula
-      if (entry !== "-" ||
-          lastChar === "-") {
-        currentFormula = currentFormula.replace(/.$/, event.target.value);
-      } else {
-        currentFormula += event.target.value;
-      }
+    
+      if (event.target.value !== "-") {
 
-    } else {
-      // Otherwise add operator to the formula
-      currentFormula += event.target.value;
+        while (endsWithOperator(currentFormula)) {
+          currentFormula = currentFormula.slice(0, -1);
+        }
+
+      } else if (lastChar === "-") {
+          return;
+      }
     }
     
+    currentFormula += event.target.value;
+
     this.setState({formula: currentFormula});
   }
 
