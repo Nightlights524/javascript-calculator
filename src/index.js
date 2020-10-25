@@ -1,22 +1,7 @@
-import { findAllByDisplayValue } from '@testing-library/react';
+// import { findAllByDisplayValue } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-
-// const Stateless = props => {
-  //   return (
-    //     <div>
-    //     </div>
-    //   );
-    // }
-    
-// function CalculatorButton(props) {
-//   return (
-//     <button>
-//       {props.value}
-//     </button>
-//   );
-// }
 
 class Calculator extends React.Component {
   constructor(props) {
