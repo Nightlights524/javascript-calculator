@@ -28,6 +28,12 @@ class Calculator extends React.Component {
 
   handleNumbers(event) {
     let currentFormula = this.state.formula;
+    let currentValue = this.state.currentValue;
+
+    if(formulaEvaluated(currentFormula)) {
+      currentFormula = "";
+      currentValue = "";yyuuyt
+    }
     
     // Special case, eliminate leading zeros for multi-digit numbers
     if (this.state.currentValue === '0' && 
@@ -90,7 +96,7 @@ class Calculator extends React.Component {
     this.setState(state => ({
       previousValue: state.currentValue,
       currentValue: answer,
-      formula: answer
+      formula: formula + "=" + answer
     }));
   }
 
@@ -170,4 +176,9 @@ function endsWithOperator(string) {
          char === "-" ||
          char === "*" ||
          char === "/";
+}
+
+function formulaEvaluated (formula) {
+  const regex = /=/;
+  return regex.test(formula);
 }
