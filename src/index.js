@@ -42,9 +42,9 @@ class Calculator extends React.Component {
   }
 
   handleNumbers(event) {
-    // Special case, eliminate leading zeros
     let currentFormula = this.state.formula;
-
+    
+    // Special case, eliminate leading zeros for multi-digit numbers
     if (this.state.currentValue === '0') {
       currentFormula = currentFormula.slice(0, -1);
     }
@@ -93,8 +93,8 @@ class Calculator extends React.Component {
       formula = formula.slice(0, -1);
     }
 
-    const answer = eval(formula);
-    // const answer = eval("5*-+5");
+    // const answer = eval(formula);
+    const answer = Math.round(1000000000000 * eval(formula)) / 1000000000000;
 
     this.setState(state => ({
       previousValue: state.currentValue,
@@ -106,11 +106,18 @@ class Calculator extends React.Component {
   handleDecimal(event) {
     const testRegex = /\./;
     if (!testRegex.test(this.state.currentValue)) {
-      const newValue = this.state.currentValue + event.target.value;
-      const currentFormula = this.state.formula + event.target.value;
+      let newValue = this.state.currentValue;
+      let currentFormula = this.state.formula;
+
+      if (endsWithOperator(this.state.formula) ||
+          this.state.formula === "") {
+        newValue = "0";
+        currentFormula += "0";
+      }
+
       this.setState({
-        currentValue: newValue,
-        formula: currentFormula
+        currentValue: newValue + event.target.value,
+        formula: currentFormula + event.target.value
       });
     }
   }
