@@ -57,7 +57,7 @@ class Calculator extends React.Component {
   }
   
   handleOperators(event) {
-    const char = this.state.formula[this.state.formula.length-1];
+    const lastChar = this.state.formula[this.state.formula.length-1];
     const entry = event.target.value;
     let currentFormula = this.state.formula;
 
@@ -73,7 +73,14 @@ class Calculator extends React.Component {
   }
 
   handleEquals(event) {
-    let answer = eval(this.state.formula);
+    let formula = this.state.formula;
+
+    if (endsWithOperator(formula))
+    {
+      formula = formula.slice(0, -1);
+    }
+
+    const answer = eval(formula);
 
     this.setState(state => ({
       previousValue: state.currentValue,
