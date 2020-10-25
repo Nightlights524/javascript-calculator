@@ -42,6 +42,15 @@ class Calculator extends React.Component {
   }
 
   handleNumbers(event) {
+    // Special case, eliminate leading zeros
+    let currentFormula = this.state.formula;
+
+    if (this.state.currentValue === '0') {
+      currentFormula = currentFormula.slice(0, -1);
+    }
+
+    this.setState({formula: currentFormula + event.target.value});
+
     if (this.state.currentValue === '0' ||
         endsWithOperator(this.state.formula)) {
       this.setState({currentValue: event.target.value});
@@ -51,19 +60,23 @@ class Calculator extends React.Component {
         currentValue: newValue
       });
     }
-    
-    const currentFormula = this.state.formula + event.target.value;
-    this.setState({formula: currentFormula});
   }
   
   handleOperators(event) {
     const lastChar = this.state.formula[this.state.formula.length-1];
     const entry = event.target.value;
+    
     let currentFormula = this.state.formula;
 
     if (endsWithOperator(this.state.formula)) {
       // Replace last character in formula
-      currentFormula = currentFormula.replace(/.$/, event.target.value);
+      if (entry !== "-" ||
+          lastChar === "-") {
+        currentFormula = currentFormula.replace(/.$/, event.target.value);
+      } else {
+        currentFormula += event.target.value;
+      }
+
     } else {
       // Otherwise add operator to the formula
       currentFormula += event.target.value;
@@ -81,6 +94,7 @@ class Calculator extends React.Component {
     }
 
     const answer = eval(formula);
+    // const answer = eval("5*-+5");
 
     this.setState(state => ({
       previousValue: state.currentValue,
