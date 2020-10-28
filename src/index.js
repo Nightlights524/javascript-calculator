@@ -28,11 +28,11 @@ class Calculator extends React.Component {
 
   handleNumbers(event) {
     let currentFormula = this.state.formula;
-    let currentValue = this.state.currentValue;
+    // let currentValue = this.state.currentValue;
 
     if(formulaEvaluated(currentFormula)) {
-      currentFormula = "";
-      currentValue = "";yyuuyt
+      // currentFormula = "";
+      // currentValue = "";
     }
     
     // Special case, eliminate leading zeros for multi-digit numbers
@@ -96,7 +96,7 @@ class Calculator extends React.Component {
     this.setState(state => ({
       previousValue: state.currentValue,
       currentValue: answer,
-      formula: formula + "=" + answer
+      formula: /*formula + "=" + */answer
     }));
   }
 
