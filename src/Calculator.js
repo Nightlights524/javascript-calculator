@@ -163,9 +163,9 @@ function endsWithOperator(string) {
          char === "/";
 }
 
-function formulaEvaluated (formula) {
-  const regex = /=/;
-  return regex.test(formula);
-}
+// function formulaEvaluated (formula) {
+//   const regex = /=/;
+//   return regex.test(formula);
+// }
 
 export default Calculator
